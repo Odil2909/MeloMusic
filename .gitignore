@@ -1,0 +1,32 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# Next.js output
+/.next/
+/out/
+/build/
+/.test-dist/
+
+# Environment files; keep the template tracked
+.env*
+!.env.example
+
+# Hosting
+.vercel
+
+# Logs and debug output
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# TypeScript build output
+*.tsbuildinfo
+next-env.d.ts
+
+# Miscellaneous
+.DS_Store
+*.pem
+coverage/

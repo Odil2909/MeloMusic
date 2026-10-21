@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rootDir": ".",
+    "outDir": ".test-dist",
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "esModuleInterop": true,
+    "noEmit": false,
+    "incremental": false
+  },
+  "include": [
+    "src/lib/music/**/*.ts",
+    "src/features/home/get-home-data.ts",
+    "src/lib/music/ids.ts",
+    "src/app/api/search/route.ts",
+    "src/app/api/tracks/[id]/route.ts",
+    "src/app/api/albums/[id]/route.ts",
+    "src/app/api/artists/[id]/route.ts"
+  ]
+}
