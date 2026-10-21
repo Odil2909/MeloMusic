@@ -5,8 +5,14 @@ import Link from "next/link";
 export function Sidebar() {
   return (
     <aside aria-label="Боковая панель" className="sidebar">
-      <Link aria-label={`${brandConfig.name} — главная`} className="brand-lockup" href="/">
-        <span aria-hidden="true" className="brand-symbol">m</span>
+      <Link
+        aria-label={`${brandConfig.name} — главная`}
+        className="brand-lockup"
+        href="/"
+      >
+        <span aria-hidden="true" className="brand-symbol">
+          m
+        </span>
         <span className="brand-name">{brandConfig.name}</span>
       </Link>
 
@@ -15,7 +21,12 @@ export function Sidebar() {
           <Icon name="home" />
           <span>Главная</span>
         </Link>
-        <button className="nav-item nav-item-muted" disabled title="Поиск появится на следующем этапе" type="button">
+        <button
+          className="nav-item nav-item-muted"
+          disabled
+          title="Поиск появится на следующем этапе"
+          type="button"
+        >
           <Icon name="search" />
           <span>Поиск</span>
           <span className="nav-soon">позже</span>
@@ -38,7 +49,9 @@ export function Sidebar() {
         <span>Подборки</span>
         <span className="nav-soon">позже</span>
       </div>
-      <p className="sidebar-empty">Подборки провайдера здесь пока не доступны.</p>
+      <p className="sidebar-empty">
+        Подборки провайдера здесь пока не доступны.
+      </p>
 
       <div className="sidebar-footer">
         <span className="status-dot" />
