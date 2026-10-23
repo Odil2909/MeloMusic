@@ -10,15 +10,8 @@ interface TrackRowProps {
 
 export function TrackRow({ track, index, compact = false }: TrackRowProps) {
   const artistNames = track.artists.map((artist) => artist.name).join(", ") || "Исполнитель не указан";
-  const trackLink = (
-    <a
-      aria-label={`Открыть «${track.title}» и автора ${artistNames} на Jamendo`}
-      className="track-main"
-      href={track.providerUrl ?? undefined}
-      rel="noreferrer"
-      target="_blank"
-      title={track.title}
-    >
+  const trackDetails = (
+    <>
       <span className="track-artwork">
         <CoverImage
           alt={`Обложка «${track.album?.title ?? track.title}»`}
@@ -30,7 +23,25 @@ export function TrackRow({ track, index, compact = false }: TrackRowProps) {
         <strong>{track.title}</strong>
         <span>{artistNames}</span>
       </span>
-    </a>
+    </>
+  );
+  const trackLink = (
+    track.providerUrl ? (
+      <a
+        aria-label={`Открыть «${track.title}» и автора ${artistNames} на Jamendo`}
+        className="track-main"
+        href={track.providerUrl}
+        rel="noreferrer"
+        target="_blank"
+        title={track.title}
+      >
+        {trackDetails}
+      </a>
+    ) : (
+      <div aria-label={`${track.title} — ${artistNames}`} className="track-main" title={track.title}>
+        {trackDetails}
+      </div>
+    )
   );
 
   if (compact) {
@@ -53,7 +64,11 @@ export function TrackRow({ track, index, compact = false }: TrackRowProps) {
       </span>
       <span className="track-duration">{formatDuration(track.durationMs)}</span>
       <span className="track-source">
-        <a href={track.providerUrl ?? undefined} rel="noreferrer" target="_blank">Jamendo</a>
+        {track.providerUrl ? (
+          <a href={track.providerUrl} rel="noreferrer" target="_blank">Jamendo</a>
+        ) : (
+          <span>Ссылка недоступна</span>
+        )}
         {track.licenseUrl ? (
           <a href={track.licenseUrl} rel="noreferrer" target="_blank">Лицензия</a>
         ) : null}

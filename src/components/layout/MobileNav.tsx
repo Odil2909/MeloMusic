@@ -1,22 +1,34 @@
+"use client";
+
 import { Icon } from "@/components/ui/Icon";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function MobileNav() {
+  const pathname = usePathname();
+
   return (
     <nav aria-label="Мобильная навигация" className="mobile-nav">
-      <Link aria-current="page" className="mobile-nav-item mobile-nav-active" href="/">
+      <Link
+        aria-current={pathname === "/" ? "page" : undefined}
+        className={`mobile-nav-item${pathname === "/" ? " mobile-nav-active" : ""}`}
+        href="/"
+      >
         <Icon name="home" size={19} />
         <span>Главная</span>
       </Link>
-      <button className="mobile-nav-item mobile-nav-muted" disabled title="Поиск появится на следующем этапе" type="button">
+      <Link
+        aria-current={pathname.startsWith("/search") ? "page" : undefined}
+        className={`mobile-nav-item${pathname.startsWith("/search") ? " mobile-nav-active" : ""}`}
+        href="/search"
+      >
         <Icon name="search" size={19} />
         <span>Поиск</span>
-      </button>
+      </Link>
       <button
-        aria-disabled="true"
         className="mobile-nav-item mobile-nav-muted"
         disabled
-        title="Раздел появится позже"
+        title="Личная медиатека появится после подключения аккаунтов"
         type="button"
       >
         <Icon name="library" size={19} />

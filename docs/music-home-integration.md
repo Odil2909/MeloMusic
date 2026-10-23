@@ -17,6 +17,10 @@ Requests use `cache: "no-store"`. The server component is streamed behind a skel
 
 Track, album, and artist titles link directly to the provider URL returned with that entity. Track rows show the creator, Jamendo attribution, and the returned license link when available. Remote covers are restricted to `https://usercontent.jamendo.com/`; failed or missing images use the same Melo fallback.
 
+## Search
+
+The `/search?q=...` page uses the existing server-side Jamendo provider to search tracks, albums, and artists. It keeps query-dependent data behind a `Suspense` boundary and shows loading, error, empty, and result states. The existing `/api/search` route is unchanged. Search results link to Jamendo when an entity has a provider URL; missing image and link metadata are handled without fabricating destinations.
+
 ## Live provider check
 
 Using the configured local ID, read-only requests returned HTTP 200 and Jamendo `success` envelopes:
@@ -36,6 +40,6 @@ The credential value and request URLs were excluded from command output and are 
 
 ## Stage boundaries and limitations
 
-The bottom player remains visible with all playback controls disabled. Search, user playlists, likes, accounts, and internal artist/album pages remain outside this stage. No user history, popularity numbers, recommendation claims, or local catalog cache is added.
+The bottom player remains visible with all playback controls disabled. User playlists, likes, accounts, and internal artist/album pages remain outside this stage. No user history, popularity numbers, recommendation claims, or local catalog cache is added.
 
 This use is limited to the non-commercial prototype previously selected for Melo. Jamendo's published terms require attribution and direct item backlinks, prohibit designing an app to cache catalog content or provide offline access, and do not grant commercial rights. A separate review of each recording's license and suitable rights remain necessary before any use beyond this prototype.

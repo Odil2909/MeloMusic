@@ -14,11 +14,11 @@ export async function HomeContent() {
     <>
       <section aria-labelledby="home-tracks-title" className="content-section" id="home-tracks">
         <SectionHeading
-          aside="Данные Jamendo"
-          description="Треки из открытого каталога. Прослушивание в Melo пока не подключено."
-          eyebrow="ТРЕКИ"
+          aside="Jamendo"
+          description="Открытые композиции каталога. Воспроизведение в Melo пока недоступно."
+          eyebrow="ОТКРЫВАЙ"
           id="home-tracks-title"
-          title="Музыка из каталога"
+          title="Музыка в каталоге"
         />
         {data.tracks.items.length === 0 ? (
           <CatalogState
@@ -36,9 +36,9 @@ export async function HomeContent() {
 
       <section aria-labelledby="new-releases-title" className="content-section" id="new-releases">
         <SectionHeading
-          aside="Даты из API"
+          aside="Даты провайдера"
           description="Альбомы отсортированы по дате релиза, указанной провайдером."
-          eyebrow="АЛЬБОМЫ"
+          eyebrow="РЕЛИЗЫ"
           id="new-releases-title"
           title="Недавние релизы"
         />
@@ -86,7 +86,7 @@ export async function HomeContent() {
         <SectionHeading
           aside="Профили Jamendo"
           description="Исполнители, опубликованные в музыкальном каталоге."
-          eyebrow="ИСПОЛНИТЕЛИ"
+          eyebrow="ОТКРЫВАЙ НОВЫХ"
           id="artists-title"
           title="Артисты каталога"
         />
