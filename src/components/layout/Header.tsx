@@ -1,3 +1,7 @@
+import Image from "next/image";
+import Link from "next/link";
+import brandMark from "../../../logo/M_logo.png";
+import { brandConfig } from "@/config/brand";
 import { Icon } from "@/components/ui/Icon";
 
 export function Header() {
@@ -7,6 +11,12 @@ export function Header() {
         <span className="topbar-eyebrow">МУЗЫКА БЛИЖЕ</span>
         <span className="topbar-title">Твоя музыкальная витрина</span>
       </div>
+      <Link aria-label={`${brandConfig.name} — главная`} className="mobile-brand" href="/">
+        <span className="mobile-brand-symbol">
+          <Image alt="" className="mobile-brand-image" src={brandMark} />
+        </span>
+        <span>{brandConfig.name}</span>
+      </Link>
       <label className="search-field">
         <Icon name="search" />
         <input

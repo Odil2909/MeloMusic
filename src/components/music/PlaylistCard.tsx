@@ -9,8 +9,8 @@ interface PlaylistCardProps {
 
 export function PlaylistCard({ playlist, onSelectTrack }: PlaylistCardProps) {
   return (
-    <article className="playlist-card">
-      <div className="playlist-artwork">
+    <article className="catalog-card playlist-card">
+      <div className="catalog-card-artwork playlist-artwork">
         <CoverImage
           alt={`Демонстрационная обложка подборки «${playlist.title}»`}
           sizes="(max-width: 767px) 44vw, (max-width: 1100px) 22vw, 16vw"
@@ -27,8 +27,8 @@ export function PlaylistCard({ playlist, onSelectTrack }: PlaylistCardProps) {
         </button>
         <span className="playlist-count">{playlist.trackIds.length} демо-трека</span>
       </div>
-      <div className="playlist-copy">
-        <strong title={playlist.title}>{playlist.title}</strong>
+      <div className="catalog-card-copy playlist-copy">
+        <strong className="catalog-card-title" title={playlist.title}>{playlist.title}</strong>
         <span>{playlist.description}</span>
       </div>
     </article>

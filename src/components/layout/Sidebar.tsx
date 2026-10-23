@@ -1,6 +1,8 @@
 import { brandConfig } from "@/config/brand";
 import { Icon } from "@/components/ui/Icon";
+import Image from "next/image";
 import Link from "next/link";
+import brandMark from "../../../logo/M_logo.png";
 
 export function Sidebar() {
   return (
@@ -11,7 +13,7 @@ export function Sidebar() {
         href="/"
       >
         <span aria-hidden="true" className="brand-symbol">
-          m
+          <Image alt="" className="brand-logo-image" priority src={brandMark} />
         </span>
         <span className="brand-name">{brandConfig.name}</span>
       </Link>
@@ -29,7 +31,7 @@ export function Sidebar() {
         >
           <Icon name="search" />
           <span>Поиск</span>
-          <span className="nav-soon">позже</span>
+          <span className="nav-soon">скоро</span>
         </button>
         <button
           aria-disabled="true"
@@ -40,14 +42,14 @@ export function Sidebar() {
         >
           <Icon name="library" />
           <span>Моя музыка</span>
-          <span className="nav-soon">позже</span>
+          <span className="nav-soon">скоро</span>
         </button>
       </nav>
 
       <div className="sidebar-divider" />
       <div className="sidebar-playlists-heading">
         <span>Подборки</span>
-        <span className="nav-soon">позже</span>
+        <span className="nav-soon">скоро</span>
       </div>
       <p className="sidebar-empty">
         Подборки провайдера здесь пока не доступны.

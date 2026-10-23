@@ -10,10 +10,10 @@ export function AlbumCard({ album }: AlbumCardProps) {
   const artistNames = album.artists.map((artist) => artist.name).join(", ") || "Исполнитель не указан";
 
   return (
-    <article className="album-card">
+    <article className="catalog-card album-card">
       <a
         aria-label={`Открыть альбом «${album.title}» исполнителя ${artistNames} на Jamendo`}
-        className="album-artwork"
+        className="catalog-card-artwork album-artwork"
         href={album.providerUrl}
         rel="noreferrer"
         target="_blank"
@@ -24,8 +24,8 @@ export function AlbumCard({ album }: AlbumCardProps) {
           src={album.coverUrl}
         />
       </a>
-      <div className="album-copy">
-        <a className="album-title-link" href={album.providerUrl} rel="noreferrer" target="_blank" title={album.title}>
+      <div className="catalog-card-copy album-copy">
+        <a className="catalog-card-title" href={album.providerUrl} rel="noreferrer" target="_blank" title={album.title}>
           {album.title}
         </a>
         <span title={artistNames}>{artistNames}</span>

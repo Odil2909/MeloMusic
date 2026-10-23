@@ -3,6 +3,9 @@ import { createRequire } from "node:module";
 import test from "node:test";
 
 const require = createRequire(import.meta.url);
+const React = require("react");
+const { renderToStaticMarkup } = require("react-dom/server");
+const { CoverImage, shouldShowImageFallback } = require("../.test-dist/src/components/ui/CoverImage.js");
 const { createJamendoProvider } = require("../.test-dist/src/lib/music/providers/jamendo.js");
 const { loadHomeData } = require("../.test-dist/src/features/home/get-home-data.js");
 const { GET: searchRoute } = require("../.test-dist/src/app/api/search/route.js");
@@ -32,6 +35,29 @@ function providerWithResponse(response) {
     fetchImpl: async () => response,
   });
 }
+
+test("cover image uses a compact fallback for absent and failed image URLs", () => {
+  const initialsMarkup = renderToStaticMarkup(React.createElement(CoverImage, {
+    src: null,
+    alt: "Photo of Artist",
+    sizes: "160px",
+    fallbackLabel: "AB",
+  }));
+  const iconMarkup = renderToStaticMarkup(React.createElement(CoverImage, {
+    src: null,
+    alt: "Album cover",
+    sizes: "160px",
+  }));
+
+  assert.match(initialsMarkup, /cover-fallback/);
+  assert.match(initialsMarkup, /cover-fallback-initials/);
+  assert.match(initialsMarkup, />AB</);
+  assert.match(iconMarkup, /cover-fallback-icon/);
+  assert.doesNotMatch(initialsMarkup + iconMarkup, />m</);
+  assert.equal(shouldShowImageFallback(null, null), true);
+  assert.equal(shouldShowImageFallback("https://usercontent.jamendo.com/broken.jpg", "https://usercontent.jamendo.com/broken.jpg"), true);
+  assert.equal(shouldShowImageFallback("https://usercontent.jamendo.com/new.jpg", "https://usercontent.jamendo.com/broken.jpg"), false);
+});
 
 const fullTrack = {
   id: "123",
@@ -100,6 +126,15 @@ test("normalizes artist tags and provider description", async () => {
   assert.equal(artist.genres, null);
   assert.deepEqual(artist.tags, ["electronic", "ambient"]);
   assert.equal(artist.description, "Музыка & свет");
+});
+
+test("keeps artists with missing optional image and provider URL metadata", async () => {
+  const provider = providerWithResponse(ok([{ id: "8", name: "No Photo Artist" }]));
+  const result = await provider.search("artist", { type: "artists", limit: 10, offset: 0 });
+
+  assert.equal(result.artists[0].name, "No Photo Artist");
+  assert.equal(result.artists[0].imageUrl, null);
+  assert.equal(result.artists[0].providerUrl, null);
 });
 
 test("leaves unavailable optional metadata unknown", async () => {
@@ -255,7 +290,7 @@ test("home data keeps successful sections when one provider request fails", asyn
   assert.ok(home.genres.error);
 });
 
-test("home data omits albums without dates or provider backlinks without treating them as errors", async () => {
+test("home data omits undated albums but preserves artists without provider backlinks", async () => {
   const provider = {
     getCatalogTracks: async () => [{ id: "jamendo:track:12", providerUrl: null }],
     getTracksByTag: async () => [],
@@ -263,7 +298,7 @@ test("home data omits albums without dates or provider backlinks without treatin
       { id: "jamendo:album:90", releaseDate: null, providerUrl: "https://www.jamendo.com/list/a90" },
       { id: "jamendo:album:91", releaseDate: "2026-10-21", providerUrl: "https://www.jamendo.com/list/a91" },
     ],
-    getCatalogArtists: async () => [{ id: "jamendo:artist:8", providerUrl: null }],
+    getCatalogArtists: async () => [{ id: "jamendo:artist:8", imageUrl: null, providerUrl: null }],
   };
 
   const home = await loadHomeData(provider);
@@ -271,7 +306,9 @@ test("home data omits albums without dates or provider backlinks without treatin
   assert.equal(home.tracks.items.length, 0);
   assert.equal(home.tracks.error, null);
   assert.deepEqual(home.albums.items.map((album) => album.id), ["jamendo:album:91"]);
-  assert.equal(home.artists.items.length, 0);
+  assert.equal(home.artists.items.length, 1);
+  assert.equal(home.artists.items[0].imageUrl, null);
+  assert.equal(home.artists.items[0].providerUrl, null);
   assert.equal(home.artists.error, null);
 });
 

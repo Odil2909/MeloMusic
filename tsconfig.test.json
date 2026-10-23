@@ -4,6 +4,7 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "jsx": "react-jsx",
     "rootDir": ".",
     "outDir": ".test-dist",
     "strict": true,
@@ -15,6 +16,8 @@
   },
   "include": [
     "src/lib/music/**/*.ts",
+    "src/components/ui/CoverImage.tsx",
+    "src/components/ui/Icon.tsx",
     "src/features/home/get-home-data.ts",
     "src/lib/music/ids.ts",
     "src/app/api/search/route.ts",

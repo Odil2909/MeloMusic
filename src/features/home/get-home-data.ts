@@ -72,7 +72,7 @@ export async function loadHomeData(provider: MusicProvider): Promise<HomeData> {
     albums: sectionFromResult(albums, (items) =>
       items.filter((album) => album.releaseDate && album.providerUrl),
     ),
-    artists: sectionFromResult(artists, (items) => items.filter((artist) => artist.providerUrl)),
+    artists: sectionFromResult(artists, (items) => items),
     genres: {
       items: genres,
       error: genreFailures.length > 0 ? publicErrorMessage(genreFailures[0]) : null,
