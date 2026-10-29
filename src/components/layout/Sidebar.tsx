@@ -59,19 +59,19 @@ export function Sidebar() {
             aria-label="Создание плейлистов пока недоступно"
             className="library-add-button"
             disabled
-            title="В Melo пока нет аккаунтов и личных плейлистов"
+            title="Создание плейлистов пока недоступно"
             type="button"
           >
             <span aria-hidden="true">+</span>
           </button>
         </div>
         <div aria-label="Фильтры медиатеки недоступны" className="library-filters">
-          <button disabled title="Личная медиатека пока не подключена" type="button">Плейлисты</button>
-          <button disabled title="Личная медиатека пока не подключена" type="button">Артисты</button>
-          <button disabled title="Личная медиатека пока не подключена" type="button">Альбомы</button>
+          <button disabled title="Медиатека скоро появится" type="button">Плейлисты</button>
+          <button disabled title="Медиатека скоро появится" type="button">Артисты</button>
+          <button disabled title="Медиатека скоро появится" type="button">Альбомы</button>
         </div>
         <p className="library-empty">
-          Личная медиатека появится после подключения аккаунтов. Сейчас доступен открытый каталог Jamendo.
+          Личная медиатека скоро появится. Сейчас доступен открытый каталог Jamendo.
         </p>
       </section>
 

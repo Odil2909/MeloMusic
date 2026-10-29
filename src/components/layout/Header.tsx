@@ -3,6 +3,8 @@ import Link from "next/link";
 import brandMark from "../../../logo/M_logo.png";
 import { brandConfig } from "@/config/brand";
 import { Icon } from "@/components/ui/Icon";
+import { Suspense } from "react";
+import { AccountStatus } from "@/components/layout/AccountStatus";
 
 export function Header() {
   return (
@@ -38,16 +40,9 @@ export function Header() {
       </form>
       <div className="topbar-actions">
         <span className="topbar-demo-label">Jamendo · независимая музыка</span>
-        <button
-          aria-disabled="true"
-          className="profile-button"
-          disabled
-          title="Регистрация и профиль ещё не подключены"
-          type="button"
-        >
-          <span className="profile-avatar"><Icon name="user" size={17} /></span>
-          <span>Профиль</span>
-        </button>
+        <Suspense fallback={<span className="account-status-placeholder">Аккаунт</span>}>
+          <AccountStatus />
+        </Suspense>
       </div>
     </header>
   );

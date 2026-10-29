@@ -25,15 +25,14 @@ export function MobileNav() {
         <Icon name="search" size={19} />
         <span>Поиск</span>
       </Link>
-      <button
-        className="mobile-nav-item mobile-nav-muted"
-        disabled
-        title="Личная медиатека появится после подключения аккаунтов"
-        type="button"
+      <Link
+        aria-current={pathname.startsWith("/account") || pathname.startsWith("/auth") ? "page" : undefined}
+        className={`mobile-nav-item${pathname.startsWith("/account") || pathname.startsWith("/auth") ? " mobile-nav-active" : ""}`}
+        href="/account"
       >
-        <Icon name="library" size={19} />
-        <span>Моя музыка</span>
-      </button>
+        <Icon name="user" size={19} />
+        <span>Аккаунт</span>
+      </Link>
     </nav>
   );
 }

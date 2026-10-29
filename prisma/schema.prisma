@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["public", "neon_auth"]
+}
+
+enum TrackReactionType {
+  LIKE
+  DISLIKE
+
+  @@schema("public")
+}
+
+// Neon Managed Auth owns this table and its credential records. Prisma reads
+// the account identity for foreign-key relations; it never manages passwords.
+model User {
+  id            String              @id @db.Uuid
+  name          String
+  email         String              @unique(map: "user_email_key")
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime            @db.Timestamptz(6)
+  updatedAt     DateTime            @db.Timestamptz(6)
+  role          String?
+  banned        Boolean?
+  banReason     String?
+  banExpires    DateTime?           @db.Timestamptz(6)
+  playlists     Playlist[]
+  reactions     UserTrackReaction[]
+  history       ListeningHistory[]
+
+  @@map("user")
+  @@schema("neon_auth")
+}
+
+model Track {
+  id               String              @id @default(uuid()) @db.Uuid
+  provider         String              @default("jamendo") @db.VarChar(32)
+  providerTrackId  String              @map("provider_track_id")
+  title            String
+  artistName       String              @map("artist_name")
+  albumTitle       String?             @map("album_title")
+  coverUrl         String?             @map("cover_url")
+  providerUrl      String?             @map("provider_url")
+  licenseUrl       String?             @map("license_url")
+  durationSeconds  Int?                @map("duration_seconds")
+  createdAt        DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime            @updatedAt @map("updated_at") @db.Timestamptz(6)
+  playlistEntries  PlaylistTrack[]
+  reactions        UserTrackReaction[]
+  listeningHistory ListeningHistory[]
+
+  @@unique([provider, providerTrackId], map: "tracks_provider_provider_track_id_key")
+  @@index([title], map: "tracks_title_idx")
+  @@index([artistName], map: "tracks_artist_name_idx")
+  @@map("tracks")
+  @@schema("public")
+}
+
+model Playlist {
+  id          String          @id @default(uuid()) @db.Uuid
+  userId      String          @map("user_id") @db.Uuid
+  name        String
+  description String?
+  isPublic    Boolean         @default(false) @map("is_public")
+  createdAt   DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  tracks      PlaylistTrack[]
+
+  @@unique([userId, name], map: "playlists_user_id_name_key")
+  @@index([userId, updatedAt], map: "playlists_user_id_updated_at_idx")
+  @@map("playlists")
+  @@schema("public")
+}
+
+model PlaylistTrack {
+  playlistId String   @map("playlist_id") @db.Uuid
+  trackId    String   @map("track_id") @db.Uuid
+  position   Int
+  addedAt    DateTime @default(now()) @map("added_at") @db.Timestamptz(6)
+  playlist   Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  track      Track    @relation(fields: [trackId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([playlistId, trackId], map: "playlist_tracks_pkey")
+  @@index([playlistId, position], map: "playlist_tracks_position_idx")
+  @@index([trackId], map: "playlist_tracks_track_id_idx")
+  @@map("playlist_tracks")
+  @@schema("public")
+}
+
+model UserTrackReaction {
+  userId    String            @map("user_id") @db.Uuid
+  trackId   String            @map("track_id") @db.Uuid
+  type      TrackReactionType
+  createdAt DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  track     Track             @relation(fields: [trackId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([userId, trackId], map: "user_track_reactions_pkey")
+  @@index([trackId, type], map: "user_track_reactions_track_type_idx")
+  @@map("user_track_reactions")
+  @@schema("public")
+}
+
+model ListeningHistory {
+  id              String   @id @default(uuid()) @db.Uuid
+  userId          String   @map("user_id") @db.Uuid
+  trackId         String   @map("track_id") @db.Uuid
+  listenedSeconds Int      @default(0) @map("listened_seconds")
+  completed       Boolean  @default(false)
+  playedAt        DateTime @default(now()) @map("played_at") @db.Timestamptz(6)
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  track           Track    @relation(fields: [trackId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([userId, playedAt], map: "listening_history_user_played_at_idx")
+  @@index([trackId, playedAt], map: "listening_history_track_played_at_idx")
+  @@map("listening_history")
+  @@schema("public")
+}

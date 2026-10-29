@@ -6,6 +6,7 @@ export type IconName =
   | "heart"
   | "home"
   | "library"
+  | "mail"
   | "menu"
   | "more"
   | "music"
@@ -14,6 +15,7 @@ export type IconName =
   | "previous"
   | "queue"
   | "search"
+  | "shield"
   | "sparkles"
   | "user"
   | "volume";
@@ -53,6 +55,8 @@ export function Icon({ name, size = 20, className }: IconProps) {
       return <svg {...shared}><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z" /></svg>;
     case "library":
       return <svg {...shared}><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5Z" /><path d="M4 17.5A2.5 2.5 0 0 1 6.5 15H20M8 7h8M8 10h6" /></svg>;
+    case "mail":
+      return <svg {...shared}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m4 7 8 6 8-6" /></svg>;
     case "menu":
       return <svg {...shared}><path d="M4 6h16M4 12h16M4 18h16" /></svg>;
     case "more":
@@ -69,6 +73,8 @@ export function Icon({ name, size = 20, className }: IconProps) {
       return <svg {...shared}><path d="M4 6h12M4 12h12M4 18h8M19 15v6M16 18h6" /></svg>;
     case "search":
       return <svg {...shared}><circle cx="10.8" cy="10.8" r="6.8" /><path d="m16 16 4.5 4.5" /></svg>;
+    case "shield":
+      return <svg {...shared}><path d="M12 3 20 6v5c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6Z" /><path d="m9 12 2 2 4-4" /></svg>;
     case "sparkles":
       return <svg {...shared}><path d="m12 3 1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5Z" /><path d="m19 16 .7 2.3L22 19l-2.3.7L19 22l-.7-2.3L16 19l2.3-.7Z" /></svg>;
     case "user":
